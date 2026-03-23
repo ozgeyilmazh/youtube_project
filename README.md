@@ -1,8 +1,8 @@
-
 # Scrape Scheduler
-Quotes Scraping işlemlerini Temporal workflow ile zamanlayan servis. cron tabanlı tetikleme yapar ve Scraper Gatewaye HTTP isteği gönderir.
 
-##  Mimari 
-[Client] -- Cron tetiklenir --> [Temporal Workflow] --> [Activity] --> [Scraper Gateway HTTP] | [Worker] <-- Workflow dinler 
+Quotes Scraping İşlemlerini Temproal Workflow ile zamanlayan servis.Cron tabanblı tetikleme yapar ve Scraper Gatewaye HTTP isteği gönderir.
+
+## Mimari 
+[Client] -- Cron tetiklenir --> [Temporal Workflow] --> [Activity] --> [Scraper Gateway HTTP] | [Worker] <-- Workflow dinnler
 
 POST /scrape/quotes/start/{start}/end/{end}
