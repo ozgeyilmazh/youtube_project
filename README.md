@@ -22,3 +22,8 @@ Temporal Server -> https://docs.temporal.io/
 macos için
 brew install temporal
 temporal server start-dev
+
+
+PACT kurulum 
+
+https://docs.pact.io/implementation_guides/go/readme#installation
