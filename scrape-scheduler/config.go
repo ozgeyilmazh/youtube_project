@@ -56,3 +56,11 @@ func (c *Config) GetTemporalHostPort() string {
 func (c *Config) GetSchedulerCron() string {
 	return c.env["SCHEDULER_CRON"]
 }
+
+func (c *Config) GetScraperGatewayHost() string {
+	return c.env["SCRAPER_GATEWAY_HOST"]
+}
+
+func (c *Config) GetSchedulerTaskQueue() string {
+	return c.env["SCHEDULER_TASK_QUEUE"]
+}

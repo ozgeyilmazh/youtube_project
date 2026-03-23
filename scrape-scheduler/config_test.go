@@ -53,6 +53,8 @@ func TestSchedulerConfig(t *testing.T) {
 			Convey("Then all env is returned", func() {
 				So(allEnv, ShouldContainKey, "SCHEDULER_CRON")
 				So(allEnv, ShouldContainKey, "TEMPORAL_HOST_PORT")
+				So(allEnv, ShouldContainKey, "SCRAPER_GATEWAY_HOST")
+				So(allEnv, ShouldContainKey, "SCHEDULER_TASK_QUEUE")
 			})
 		})
 	})
