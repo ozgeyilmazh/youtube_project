@@ -2,14 +2,15 @@ package scrape_scheduler
 
 import (
 	"testing"
-)
 
+	. "github.com/smartystreets/goconvey/convey"
+)
 
 func TestSchedulerConfig(t *testing.T) {
 	Convey("Given dev config file is loaded", t, func() {
 		config := NewConfig(EnvironmentDev)
 		Convey("Then temporal host port is returned", func() {
-			schedulerConfig := config.GetSchedulerCron()
+			schedulerCron := config.GetSchedulerCron()
 			Convey("Then the cron scraping is set to every 10 minutes", func() {
 				So(schedulerCron, ShouldNotBeEmpty)
 			})
@@ -19,7 +20,7 @@ func TestSchedulerConfig(t *testing.T) {
 	Convey("Given local config file is loaded", t, func() {
 		config := NewConfig(EnvironmentLocal)
 		Convey("Then temporal host port is returned", func() {
-			schedulerConfig := config.GetSchedulerCron()
+			schedulerCron := config.GetSchedulerCron()
 			Convey("Then the cron scraping is set to every 10 minutes", func() {
 				So(schedulerCron, ShouldNotBeEmpty)
 			})
@@ -29,7 +30,7 @@ func TestSchedulerConfig(t *testing.T) {
 	Convey("Given prod config file is loaded", t, func() {
 		config := NewConfig(EnvironmentProd)
 		Convey("Then temporal host port is returned", func() {
-			schedulerConfig := config.GetSchedulerCron()
+			schedulerCron := config.GetSchedulerCron()
 			Convey("Then the cron scraping is set to every 10 minutes", func() {
 				So(schedulerCron, ShouldNotBeEmpty)
 			})
@@ -44,7 +45,7 @@ func TestSchedulerConfig(t *testing.T) {
 				So(temporalHostPort, ShouldNotBeEmpty)
 			})
 		})
-	})	
+	})
 	Convey("Given config is loaded", t, func() {
 		config := NewConfig(EnvironmentLocal)
 		Convey("When config GetAllEnv is called", func() {
