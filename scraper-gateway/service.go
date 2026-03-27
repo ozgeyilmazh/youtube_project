@@ -16,5 +16,5 @@ func NewService(triggerScrapeClient ServiceQuotesDiscoveryClient) *Service {
 }
 
 func (s *Service) TriggerScrape(ctx context.Context, start int, end int) error {
-	return nil
+	return s.triggerScrapeClient.TriggerScrape(ctx, start, end)
 }
