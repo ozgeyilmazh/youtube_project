@@ -33,7 +33,7 @@ func TestHandler(t *testing.T) {
 				Provider:        "QuotesScrapingGateway",
 				ProviderBaseURL: "http://localhost:1234",
 				PactFiles: []string{
-					"../pacts/QuotesScrapingScheduler-QuotesScrapingGateway.json",
+					"pacts/QuotesScrapingScheduler-QuotesScrapingGateway.json",
 				},
 			})
 			Convey("Then the response is successful", func() {

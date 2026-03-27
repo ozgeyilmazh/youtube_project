@@ -3,6 +3,7 @@ package scraper_gateway
 //go:generate mockgen -destination=handler_mock.go -package=scraper_gateway . HandlerService
 import (
 	"context"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -24,5 +25,17 @@ func (h *Handler) RegisterRoutes(app *fiber.App) {
 }
 
 func (h *Handler) TriggerScraping(ctx *fiber.Ctx) error {
-	return nil
+	start := ctx.Params("start")
+	end := ctx.Params("end")
+	go func() {
+		startInt, _ := strconv.Atoi(start)
+		endInt, _ := strconv.Atoi(end)
+		err := h.service.TriggerScraping(ctx.Context(), startInt, endInt)
+		if err != nil {
+			ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+	}()
+	return ctx.SendStatus(fiber.StatusAccepted)
 }
