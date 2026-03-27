@@ -29,7 +29,7 @@ func TestQuotesDiscoveryConsumer(t *testing.T) {
 		Convey("When the trşşger scrape function is executed", func() {
 
 			err := mockProvider.ExecuteTest(t, func(config consumer.MockServerConfig) error {
-				client := NewQuotesDiscoveryConsumer(fmt.Sprintf("http://%s:%d", config.Host, config.Port))
+				client := NewQuotesDiscoveryClient(fmt.Sprintf("http://%s:%d", config.Host, config.Port))
 				err := client.TriggerScrape(context.Background(), 1, 10)
 				return err
 			})

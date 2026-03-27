@@ -34,16 +34,16 @@ func (m *MockHandlerService) EXPECT() *MockHandlerServiceMockRecorder {
 	return m.recorder
 }
 
-// TriggerScraping mocks base method.
-func (m *MockHandlerService) TriggerScraping(arg0 context.Context, arg1, arg2 int) error {
+// TriggerScrape mocks base method.
+func (m *MockHandlerService) TriggerScrape(arg0 context.Context, arg1, arg2 int) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "TriggerScraping", arg0, arg1, arg2)
+	ret := m.ctrl.Call(m, "TriggerScrape", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// TriggerScraping indicates an expected call of TriggerScraping.
-func (mr *MockHandlerServiceMockRecorder) TriggerScraping(arg0, arg1, arg2 interface{}) *gomock.Call {
+// TriggerScrape indicates an expected call of TriggerScrape.
+func (mr *MockHandlerServiceMockRecorder) TriggerScrape(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TriggerScraping", reflect.TypeOf((*MockHandlerService)(nil).TriggerScraping), arg0, arg1, arg2)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TriggerScrape", reflect.TypeOf((*MockHandlerService)(nil).TriggerScrape), arg0, arg1, arg2)
 }

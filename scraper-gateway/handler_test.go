@@ -23,7 +23,7 @@ func TestHandler(t *testing.T) {
 	defer ctrl.Finish()
 	Convey("Given a request to trigger scraping", t, func() {
 		mockService := NewMockHandlerService(ctrl)
-		mockService.EXPECT().TriggerScraping(gomock.Any(), 1, 10).Return(nil)
+		mockService.EXPECT().TriggerScrape(gomock.Any(), 1, 10).Return(nil)
 		verifier := provider.NewVerifier()
 		handler := NewHandler(mockService)
 		go StartServer(*handler)

@@ -1,0 +1,41 @@
+{
+  "consumer": {
+    "name": "QuotesScraperGateway"
+  },
+  "interactions": [
+    {
+      "description": "A request to trigger scraping",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "A request to trigger scraping"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/scrape/quotes/start/1/end/10"
+      },
+      "response": {
+        "status": 202
+      },
+      "transport": "http",
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pact-go": {
+      "version": "2.4.2"
+    },
+    "pactRust": {
+      "ffi": "0.4.28",
+      "mockserver": "1.2.16",
+      "models": "1.3.5"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "QuotesDiscovery"
+  }
+}

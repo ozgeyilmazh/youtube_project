@@ -9,7 +9,7 @@ import (
 )
 
 type HandlerService interface {
-	TriggerScraping(ctx context.Context, start int, end int) error
+	TriggerScrape(ctx context.Context, start int, end int) error
 }
 
 type Handler struct {
@@ -30,7 +30,7 @@ func (h *Handler) TriggerScraping(ctx *fiber.Ctx) error {
 	go func() {
 		startInt, _ := strconv.Atoi(start)
 		endInt, _ := strconv.Atoi(end)
-		err := h.service.TriggerScraping(ctx.Context(), startInt, endInt)
+		err := h.service.TriggerScrape(ctx.Context(), startInt, endInt)
 		if err != nil {
 			ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": err.Error(),

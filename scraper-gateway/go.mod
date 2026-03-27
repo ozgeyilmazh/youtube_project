@@ -5,6 +5,7 @@ go 1.26.1
 require (
 	github.com/gofiber/fiber/v2 v2.52.12
 	github.com/golang/mock v1.6.0
+	github.com/joho/godotenv v1.5.1
 	github.com/pact-foundation/pact-go/v2 v2.4.2
 	github.com/smartystreets/goconvey v1.8.1
 	github.com/stretchr/testify v1.11.1
