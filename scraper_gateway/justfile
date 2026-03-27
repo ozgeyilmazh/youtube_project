@@ -1,0 +1,6 @@
+generate:
+    go generate ./...
+
+run:
+    go clean -testcache
+    go test ./... -v
