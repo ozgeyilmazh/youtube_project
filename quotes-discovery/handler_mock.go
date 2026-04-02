@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	"go.temporal.io/sdk/workflow"
+	workflow "go.temporal.io/sdk/workflow"
 )
 
 // MockHandlerWorkflow is a mock of HandlerWorkflow interface.
