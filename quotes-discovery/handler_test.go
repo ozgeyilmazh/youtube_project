@@ -16,7 +16,7 @@ func TestHandler(t *testing.T) {
 	defer ctrl.Finish()
 	Convey("Given a HandlerWorkflow is provided", t, func() {
 		mockWorkflow := quotesdiscovery.NewMockHandlerWorkflow(ctrl)
-		mockWorkflow.EXPECT().FetchQuotes(gomock.Any(), 1).Return([]quotesdiscovery.Quotes{
+		mockWorkflow.EXPECT().FetchQuotes(gomock.Any(), gomock.Any()).Return([]quotesdiscovery.Quotes{
 			{
 				Quote:  "Test Quote",
 				Author: "Test Author",

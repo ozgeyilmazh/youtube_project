@@ -7,9 +7,11 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"go.temporal.io/sdk/client"
 	"go.temporal.io/sdk/worker"
 	"go.temporal.io/sdk/workflow"
@@ -41,7 +43,32 @@ func (h *Handler) RegisterRoutes(app *fiber.App) {
 }
 
 func (h *Handler) FetchQuotes(c *fiber.Ctx) error {
-	return nil
+	start, err := strconv.Atoi(c.Params("start"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	end, err := strconv.Atoi(c.Params("end"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	for i := start; i <= end; i++ {
+		workflowOptions := client.StartWorkflowOptions{
+			ID:        uuid.New().String(),
+			TaskQueue: h.taskQueue,
+		}
+		_, err := h.temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, h.workflow.FetchQuotes, i)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+	}
+	return c.SendStatus(fiber.StatusAccepted)
 }
 
 func StartServer(workflow HandlerWorkflow) (*fiber.App, worker.Worker) {
