@@ -3,7 +3,6 @@ package quotesdiscovery
 //go:generate mockgen -destination=workflow_mock.go -package=quotesdiscovery . WorkflowActivity
 import (
 	"context"
-	"fmt"
 
 	"go.temporal.io/sdk/workflow"
 )
@@ -24,9 +23,16 @@ func NewWorkflow(activity WorkflowActivity, activityOptions workflow.ActivityOpt
 }
 
 func (w *Workflow) FetchQuotes(ctx workflow.Context, page int) ([]Quotes, error) {
-	return nil, fmt.Errorf("not implemented")
-}
 
-func (w *Workflow) BulkInsertData(ctx workflow.Context, quotes []Quotes) error {
-	return fmt.Errorf("not implemented")
+	ctx = workflow.WithActivityOptions(ctx, w.activityOptions)
+	var quotes []Quotes
+	err := workflow.ExecuteActivity(ctx, w.activity.FetchQuotes, page).Get(ctx, &quotes)
+	if err != nil {
+		return nil, err
+	}
+	err = workflow.ExecuteActivity(ctx, w.activity.BulkInsertData, quotes).Get(ctx, nil)
+	if err != nil {
+		return nil, err
+	}
+	return quotes, nil
 }
