@@ -1,6 +1,15 @@
 generate:
     go generate ./...
 
-run:
+run-test:
     go clean -testcache
     go test ./... -v
+    
+run-worker target=default:
+    ENV={{target}} go run worker/main.go
+
+run-client target=default:
+    ENV={{target}} go run client/main.go
+
+lint:
+    golangci-lint run
