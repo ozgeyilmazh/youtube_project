@@ -50,13 +50,13 @@ func TestWorkflow(t *testing.T) {
 	defer ctrl.Finish()
 	Convey("Given a fetchQuotes activity is provided", t, func() {
 		mockActivity := NewMockWorkflowActivity(ctrl)
-		mockActivity.EXPECT().FetchQuotes(gomock.Any(), gomock.Any()).Return([]Quotes{
+		mockActivity.EXPECT().FetchQuotes(gomock.Any(), 1).Return([]Quotes{
 			{
 				Quote:  "Test Quote",
 				Author: "Test Author",
 			},
-		}, nil).AnyTimes()
-		mockActivity.EXPECT().BulkInsertData(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
+		}, nil).Times(1)
+		mockActivity.EXPECT().BulkInsertData(gomock.Any(), gomock.Any()).Return(nil).Times(1)
 
 		workflowOptions := setupWorkflowOptions()
 		temporalClient := setupTemporalClient()
@@ -70,9 +70,12 @@ func TestWorkflow(t *testing.T) {
 
 		Convey("When the workflow is executed", func() {
 			flowRun, err := temporalClient.ExecuteWorkflow(context.Background(), workflowOptions, workflow.FetchQuotes, 1)
-			err = flowRun.Get(context.Background(), nil)
-			Convey("Then the fetch quotes activity is called", func() {
+			So(err, ShouldBeNil)
+			var got []Quotes
+			err = flowRun.Get(context.Background(), &got)
+			Convey("Then FetchQuotes and BulkInsertData each run once and the workflow returns the quotes", func() {
 				So(err, ShouldBeNil)
+				So(got, ShouldResemble, []Quotes{{Quote: "Test Quote", Author: "Test Author"}})
 			})
 		})
 	})

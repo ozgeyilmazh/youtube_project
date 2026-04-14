@@ -71,7 +71,10 @@ func (h *Handler) FetchQuotes(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusAccepted)
 }
 
-func StartServer(workflow HandlerWorkflow) (*fiber.App, worker.Worker) {
+// StartServer runs the HTTP app and a Temporal worker on the configured task queue.
+// activity must be the same WorkflowActivity instance passed into NewWorkflow so activity
+// names and behavior match what the workflow schedules.
+func StartServer(workflow HandlerWorkflow, activity WorkflowActivity) (*fiber.App, worker.Worker) {
 
 	config := NewConfig(EnvironmentLocal)
 	app := fiber.New()
@@ -83,7 +86,7 @@ func StartServer(workflow HandlerWorkflow) (*fiber.App, worker.Worker) {
 	if err != nil {
 		panic(err)
 	}
-	w := setupWorker(workflow, temporalClient, taskQueue)
+	w := setupWorker(workflow, temporalClient, taskQueue, activity)
 
 	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
 		Level:     slog.LevelInfo,
@@ -101,10 +104,11 @@ func StartServer(workflow HandlerWorkflow) (*fiber.App, worker.Worker) {
 	return app, w
 }
 
-func setupWorker(workflow HandlerWorkflow, temporalClient client.Client, taskQueue string) worker.Worker {
+func setupWorker(workflow HandlerWorkflow, temporalClient client.Client, taskQueue string, activity WorkflowActivity) worker.Worker {
 	worker := worker.New(temporalClient, taskQueue, worker.Options{})
 	worker.RegisterWorkflow(workflow.FetchQuotes)
-
+	worker.RegisterActivity(activity.FetchQuotes)
+	worker.RegisterActivity(activity.BulkInsertData)
 	err := worker.Start()
 	if err != nil {
 		fmt.Println("Failed to start worker", err)

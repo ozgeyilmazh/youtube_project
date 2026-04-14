@@ -23,9 +23,13 @@ func TestHandler(t *testing.T) {
 			},
 		}, nil).AnyTimes()
 
+		mockActivity := quotesdiscovery.NewMockWorkflowActivity(ctrl)
+		mockActivity.EXPECT().FetchQuotes(gomock.Any(), gomock.Any()).Return(nil, nil).AnyTimes()
+		mockActivity.EXPECT().BulkInsertData(gomock.Any(), gomock.Any()).Return(nil).AnyTimes()
+
 		verifier := provider.NewVerifier()
 
-		app, w := quotesdiscovery.StartServer(mockWorkflow)
+		app, w := quotesdiscovery.StartServer(mockWorkflow, mockActivity)
 		defer w.Stop()
 
 		go func() {
