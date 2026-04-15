@@ -4,6 +4,7 @@ package quotesapi
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -30,5 +31,17 @@ func (h *Handler) RegisterRoutes(app *fiber.App) {
 }
 
 func (h *Handler) FetchQuotes(c *fiber.Ctx) error {
-	return nil
+	page, err := strconv.Atoi(c.Query("page"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	quotes, err := h.service.FetchQuotes(c.Context(), page)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+	return c.JSON(quotes)
 }
