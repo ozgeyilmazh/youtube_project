@@ -45,7 +45,7 @@ func NewQuotesApiClientAdapter(client *Client) *QuotesApiClientAdapter {
 	return &QuotesApiClientAdapter{client: client}
 }
 
-func (a *QuotesApiClientAdapter) FetchQuotes(ctx context.Context, page int) ([]Quote, error) {
+func (a *QuotesApiClientAdapter) FetchQuotes(ctx context.Context, page int) ([]QuotesResponse, error) {
 	a.client.logger.Info("Fetching quotes", "page", page)
 
 	quotes, err := a.client.FetchQuotes(ctx, page)
@@ -53,9 +53,9 @@ func (a *QuotesApiClientAdapter) FetchQuotes(ctx context.Context, page int) ([]Q
 		return nil, err
 	}
 
-	result := make([]Quote, len(quotes))
+	result := make([]QuotesResponse, len(quotes))
 	for i, w := range quotes {
-		result[i] = Quote{
+		result[i] = QuotesResponse{
 			Quote:  w.Quote,
 			Author: w.Author,
 		}
