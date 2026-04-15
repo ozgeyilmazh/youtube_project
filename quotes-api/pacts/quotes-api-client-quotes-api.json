@@ -1,0 +1,73 @@
+{
+  "consumer": {
+    "name": "quotes-api-client"
+  },
+  "interactions": [
+    {
+      "description": "A request to fetch quotes",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "A request to fetch quotes"
+        }
+      ],
+      "request": {
+        "matchingRules": {
+          "query": {
+            "page": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            }
+          }
+        },
+        "method": "GET",
+        "path": "/api/quotes",
+        "query": {
+          "page": [
+            "1"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "content": [
+            {
+              "author": "Test Author",
+              "quote": "Test Quote"
+            }
+          ],
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ]
+        },
+        "status": 200
+      },
+      "transport": "http",
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pact-go": {
+      "version": "2.4.2"
+    },
+    "pactRust": {
+      "ffi": "0.4.28",
+      "mockserver": "1.2.16",
+      "models": "1.3.5"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "quotes-api"
+  }
+}
