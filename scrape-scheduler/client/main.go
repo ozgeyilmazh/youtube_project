@@ -79,8 +79,8 @@ func main() {
 
 	http.HandleFunc("/healthz", quotes_scraping_scheduler.Healthz)
 	go func() {
-		logger.Info("Starting Healthz on port 8081")
-		err := http.ListenAndServe(":8081", nil)
+		logger.Info("Starting Healthz on port 8080")
+		err := http.ListenAndServe(":8080", nil)
 		if err != nil {
 			logger.Error("Failed to start healthz", "error", err)
 			os.Exit(1)

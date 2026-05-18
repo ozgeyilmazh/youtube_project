@@ -37,6 +37,31 @@ type Quote struct {
 	Author string `json:"author"`
 }
 
+func (q *Quote) UnmarshalJSON(data []byte) error {
+	type quoteAlias struct {
+		Quote  string `json:"quote"`
+		Author string `json:"author"`
+		Q      string `json:"q"`
+		A      string `json:"a"`
+	}
+
+	var raw quoteAlias
+	if err := json.Unmarshal(data, &raw); err != nil {
+		return err
+	}
+
+	q.Quote = raw.Quote
+	if q.Quote == "" {
+		q.Quote = raw.Q
+	}
+
+	q.Author = raw.Author
+	if q.Author == "" {
+		q.Author = raw.A
+	}
+	return nil
+}
+
 type QuotesApiClientAdapter struct {
 	client *Client
 }
@@ -84,8 +109,7 @@ func (c *Client) FetchQuotes(ctx context.Context, page int) ([]Quote, error) {
 	}
 
 	var quotes []Quote
-	err = json.NewDecoder(resp.Body).Decode(&quotes)
-	if err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(&quotes); err != nil {
 		return []Quote{}, err
 	}
 	return quotes, nil

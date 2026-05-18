@@ -3,6 +3,7 @@ package scraper_gateway
 //go:generate mockgen -destination=handler_mock.go -package=scraper_gateway . HandlerService
 import (
 	"context"
+	"log/slog"
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
@@ -25,16 +26,22 @@ func (h *Handler) RegisterRoutes(app *fiber.App) {
 }
 
 func (h *Handler) TriggerScraping(ctx *fiber.Ctx) error {
-	start := ctx.Params("start")
-	end := ctx.Params("end")
+	startInt, err := strconv.Atoi(ctx.Params("start"))
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "invalid start",
+		})
+	}
+	endInt, err := strconv.Atoi(ctx.Params("end"))
+	if err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "invalid end",
+		})
+	}
+
 	go func() {
-		startInt, _ := strconv.Atoi(start)
-		endInt, _ := strconv.Atoi(end)
-		err := h.service.TriggerScrape(ctx.Context(), startInt, endInt)
-		if err != nil {
-			ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": err.Error(),
-			})
+		if err := h.service.TriggerScrape(context.Background(), startInt, endInt); err != nil {
+			slog.Error("trigger scrape failed", "start", startInt, "end", endInt, "error", err)
 		}
 	}()
 	return ctx.SendStatus(fiber.StatusAccepted)

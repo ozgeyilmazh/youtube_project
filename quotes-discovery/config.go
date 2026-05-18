@@ -60,3 +60,11 @@ func (c *Config) GetTaskQueue() string {
 func (c *Config) GetPort() string {
 	return c.env["PORT"]
 }
+
+func (c *Config) GetQuotesClientHost() string {
+	return c.env["QUOTES_CLIENT_HOST"]
+}
+
+func (c *Config) GetClickhouseTableName() string {
+	return c.env["CLICKHOUSE_TABLE_NAME"]
+}

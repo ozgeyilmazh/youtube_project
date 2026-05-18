@@ -2,6 +2,7 @@ package quotesapi
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"testing"
 
@@ -56,5 +57,17 @@ func TestQuotesClient(t *testing.T) {
 		if err != nil {
 			t.Fatalf("Failed to fetch quotes: %v", err)
 		}
+	})
+}
+
+func TestQuoteUnmarshalJSON(t *testing.T) {
+	t.Run("Given zenquotes response fields When unmarshaled Then quote and author are populated", func(t *testing.T) {
+		payload := []byte(`{"q":"The person who never made a mistake never tried anything new.","a":"Albert Einstein"}`)
+
+		var quote Quote
+		err := json.Unmarshal(payload, &quote)
+		assert.NoError(t, err)
+		assert.Equal(t, "The person who never made a mistake never tried anything new.", quote.Quote)
+		assert.Equal(t, "Albert Einstein", quote.Author)
 	})
 }
